@@ -29,4 +29,4 @@
 - Fully functional home control system prototype.
 - Documentation including system architecture, hardware/software components, and user manual.
 - Presentation outlining project development, challenges faced, and future improvements.
-# RTOS_weather_project
+
