@@ -1,12 +1,21 @@
-/*************************************
- * This is for driving the OLED display to have it display information to us as needed
+/**
+ * @file oledDisplay.h
+ * @author Alphonse Crittenden
+ * 
+ * @brief This is for driving the OLED display to have it display information to us as needed
  *
  * This will be able to display several different things -> for more information, consult the
  * project documentation
- *
- **************************************/
-// OLed images from https://www.hackster.io/shubhamsantosh99/weather-monitoring-on-oled-c1d4a8
-//  Array bytes of the Weather icons
+ * 
+ * OLed images from https://www.hackster.io/shubhamsantosh99/weather-monitoring-on-oled-c1d4a8
+ * Array bytes of the Weather icons
+ * 
+ * @version 0.1
+ * @date 2024-04-23
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 
 const unsigned char thunderstorm_rain[] PROGMEM = {
     0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xf0,

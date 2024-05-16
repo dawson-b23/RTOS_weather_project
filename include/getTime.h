@@ -1,8 +1,18 @@
-/****************************************************
- * This file will be responsible for getting the date and the time from the
+/**
+ * @file getTime.h
+ * @author Alphonse Crittenden
+ * 
+ * @brief This file will be responsible for getting the date and the time from the
  * internet so we can get it on our local machine, and on the ESP32
  * with more ease then doing so in other ways
- *****************************************************/
+ * 
+ * @version 0.1
+ * @date 2024-04-23
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
+
 // Library includes
 #include <WiFi.h>
 #include "time.h"

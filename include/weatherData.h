@@ -1,12 +1,22 @@
-/*********************************************************************
- * This file is for getting all of the relevant data from the web api
+/**
+ * @file weatherData.h
+ * @author Dawson Burgess (dawsonhburgess@gmail.com)
+ * 
+ * @brief This file is for getting all of the relevant data from the web api
  * for displaying weather data. We will be using OpenWeather API.
  * 
  * This API will allow us 60 calls per minute, so we will query the server every 2 minutes to be safe.
  * The weather will display the current temperature and the forcast.
  * 
  * This will also give us web widgets to display the weather info to our website if we would like to.
-**********************************************************************/
+ * 
+ * @version 0.1
+ * @date 2024-04-23
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
+
 //Libraries to include
 #include <WiFi.h>
 #include "HTTPClient.h"

@@ -1,8 +1,17 @@
-/************************************************
- * This is the webpage for the ESP32 site
+/**
+ * @file index.h
+ * @author Alphonse Crittenden
+ * 
+ * @brief This is the webpage for the ESP32 site
  * 
  * We can display whatever we want on this website that will be hosted on the ESP32
-************************************************/
+ * 
+ * @version 0.1
+ * @date 2024-04-23
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 const char index_html[] PROGMEM = R"=====(
 <!DOCTYPE HTML>
 <html>

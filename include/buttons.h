@@ -1,12 +1,23 @@
-/*******************************************
- * This file is for driving tasks that the buttons may have.
+/**
+ * @file buttons.h
+ * @author Lucien Lee 
+ * 
+ * @brief This file is for driving tasks that the buttons may have.
  *
  * The buttons have been outlined to preform the following tasks:
  * Button 1: Acts as a light switch, allowing user to manually control the LEDs
  * Button 2: Serves as a kill switch for the entire system, providing emergency shutoff function
  * Button 3: Allows the user to cycle through different displays on the LED screen.
- *
- ********************************************/
+ * 
+ * For full documentation, visit the project github page
+ * 
+ * @version 0.1
+ * @date 2024-04-23
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
+
 // Libraries to include
 #include <Arduino.h>
 

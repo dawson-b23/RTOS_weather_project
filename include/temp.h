@@ -1,12 +1,21 @@
-/***********************************************
- * This is for getting data from the tempurature and humidity sensor
+/**
+ * @file temp.h
+ * @author Dawson Burgess (dawsonhburgess@gmail.com)
+ * 
+ * @brief This is for getting data from the tempurature and humidity sensor
  * and relaying that information to other parts of the program
-***********************************************/
-//Libraries to include
+ * 
+ * @version 0.1
+ * @date 2024-04-23
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
+
 #include "Wire.h"
 #include <math.h>
 
-// Define the variables that we may need for the sensor data
+// Define the registers for temp/hum sensor data
 #define HDC1080ADDRESS 0x40
 #define MANDEVICEIDREG 0xFE
 #define SERIALREG1 0xFB
@@ -17,12 +26,16 @@
 #define CONFIGREG 0x02
 #define HUMIDREG 0x01
 
-// Global tempurature define to get the temperature anywhere that we may need it
+// Global tempurature + humidity
 float temperatureCelcius = 0;
 float temperatureFarenheit = 0;
 float humidity_ = 0;
 
-// Function to get and return the temperature in degrees celsius
+/**
+ * @brief Function to get and return the temperature in degrees celsius
+ * 
+ * @return float; temperature in celcius
+ */
 float getTempC(){
     Wire.beginTransmission(HDC1080ADDRESS);
     Wire.write(TEMPERATUREREG);
@@ -40,7 +53,11 @@ float getTempC(){
     return temperature;
 }
 
-// Function to get and return the humidity
+/**
+ * @brief Function to get and return the humidity
+ * 
+ * @return float; humidty
+ */
 float getHumidity()
 {
     Wire.beginTransmission(HDC1080ADDRESS);
@@ -60,13 +77,22 @@ float getHumidity()
     return humidity;
 }
 
-// Function to get the degrees in farenheight
+/**
+ * @brief Function to get the degrees in F
+ * 
+ * @param c ; temperature in C
+ * @return float ; temperatre in F
+ */
 float getTempF(float c){
     float far = c * 9 / 5 + 32;
     return far;
 }
 
-// Task to update the temperature information
+/**
+ * @brief Task to update the temperature information
+ * 
+ * @param pvParam standard param for FreeRTOS
+ */
 void getTemperatureTask(void* pvParam){
     while(true){
         // read the temperature sensor
@@ -75,21 +101,23 @@ void getTemperatureTask(void* pvParam){
         temperatureFarenheit = getTempF(temperatureCelcius);
         Serial.print("The temperature in F is: "); Serial.println(temperatureFarenheit);
 
-        //humidity_ = getHumidity();
-        //Serial.print("The humidity is: "); Serial.println(humidity_);
         if(currentScreen == 3)
         {
             displayRoomTemp();
         }
 
-        // Delay the task so we aren't constantly running it (update every 5 seconds)
+        // Delay/update every 5 seconds
         vTaskDelay(pdMS_TO_TICKS(5000));
     }
 }
 
+/**
+ * @brief function for handling and storing temperature/humidity data on webserver 
+ * 
+ */
 void handleRoomTemp() {
     JsonDocument doc;
-    doc["temp"] = String(temperatureFarenheit, 2);  // ensure you are actually updating these values
+    doc["temp"] = String(temperatureFarenheit, 2);
 
     String output;
     serializeJson(doc, output);

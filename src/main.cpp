@@ -1,16 +1,21 @@
-/***************************************************************
- * Final Project for CS452
+/**
+ * @file main.cpp
+ * @author Dawson Burgess (dawsonhburgess@gmail.com), Alphonse Crittenden, and Lucien Lee
  * 
- * We will be creating a server to display weather data and complete other functions
- * based off of the GPS location that we recieve from our device.
+ * @brief Final Project for CS452.
+ * This project creats a server to display weather data and complete other functions
+ * based off of the GPS location that we recieve from our ESP32 device.
  * 
  * For full documentation, visit the project github page
  * 
- * Started on: 04 - 23- 24
+ * @version 0.1
+ * @date 2024-04-23
  * 
- * By: Dawson Burgess, Alphonse Crittenden, and Lucien Lee
-*****************************************************************/
-// Library includes
+ * @copyright Copyright (c) 2024
+ * 
+ */
+
+// library includes
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include <WiFi.h>
@@ -21,17 +26,20 @@
 #include "SPIFFS.h"
 #include <string>
 
-// Wifi Constants
-int port = 80;
-int wifiStatus = 0;             // Set the status of being connected to wifi to false
-WiFiClient wifi;
-WebServer server(port);         // This is for the local server to be hosted on the ESP32
-
-// Personal Includes
+// Local Includes
 #include "wifiConnect.h"
 #include "weatherData.h"
 
-// This function will start the html web page (stored in progmem)
+// Wifi Constants
+int port = 80;
+int wifiStatus = 0;     // Set the status of being connected to wifi to false
+WiFiClient wifi;
+WebServer server(port); // This is for the local server to be hosted on the ESP32
+
+/**
+ * @brief This function will start the html web page (stored in progmem)
+ * 
+ */
 void handleRoot(){
     File file = SPIFFS.open("/index.html", "r"); // Open Home page infile from system flash 
     
@@ -42,20 +50,19 @@ void handleRoot(){
 
     }
 
-    String s = file.readString();              // Read the contents of the HTML
+    String s = file.readString();   // Read the contents of the HTML
     file.close();
 
     s.replace("TEMP_CITY_ID", cityId);
 
     server.send(200, "text/html", s);   //Send the web page
-
-    //strip.setPixelColor(3, strip.Color(0, 0, 255));
-    //strip.show();
-
-    
 }
 
-// Update the web server so we can view the web server in reat time
+/**
+ * @brief Update the web server so we can view the web server in reat time
+ * 
+ * @param pvParam standard param for FreeRTOS
+ */
 void updateWebsiteTask(void* pvParam){
     while(true){
         if(weatherDataRecieved ==1)
@@ -72,7 +79,11 @@ void updateWebsiteTask(void* pvParam){
     }
 }
 
-// Task to setup the wifi Connection
+/**
+ * @brief FreeRTOS Task to setup the wifi Connection
+ * 
+ * @param pvParam standard param for FreeRTOS
+ */
 void wifiConnectionTask(void* pvParam){
     int wifiConnectionComplete = 0;
     while(true){
@@ -100,15 +111,13 @@ void wifiConnectionTask(void* pvParam){
             }
 
             // Server handle calls
-            server.on("/", handleRoot);                         //This is display page
+            server.on("/", handleRoot); 
             
             // Start server
             Serial.println(WiFi.localIP());
             server.begin();
             Serial.println("The web server has been established...");
-        }else{
-            // May want to kill the task after this is completed...
-
+        }else{        
             //Start the other Tasks here
             if(wifiStatus == 1 && wifiConnectionComplete == 0){
                 // Create the task for allowing the GPS Coordinates to be read
@@ -119,8 +128,6 @@ void wifiConnectionTask(void* pvParam){
                 // Start the display here
                 serverAddress = WiFi.localIP().toString();
                 clearScreen();
-                //vTaskDelay(pdMS_TO_TICKS(3000));
-                //displayWifiStatus(true);
                 sendTextToDisplay(serverAddress, 2, 2, 0);
                 wifiConnectionComplete = 1;
             }
@@ -133,7 +140,10 @@ void wifiConnectionTask(void* pvParam){
     }
 }
 
-// Setup Function
+/**
+ * @brief standard Setup Function via arduino, function is called when a program starts. Use it to initialize variables, pin modes, start using libraries, etc.
+ * 
+ */
 void setup(){
     // Start the serial interface for debugging purposes
     Serial.begin(115200);
@@ -180,7 +190,8 @@ void setup(){
     buttonSetup();
 }
 
-// Loop function
-void loop(){
-    // This function will not really be used, just here for compilation purposes...
-}
+/**
+ * @brief standard loop Function via arduino, should never be reached. program is started in setup()
+ * 
+ */
+void loop(){ }

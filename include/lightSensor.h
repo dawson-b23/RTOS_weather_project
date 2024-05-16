@@ -1,33 +1,45 @@
-/*******************************************
- * This is the header file to deal with the different light sensor operations...
+/**
+ * @file lightSensor.h
+ * @author Dawson Burgess (dawsonhburgess@gmail.com)
+ * 
+ * @brief This is the header file to deal with the different light sensor operations...
  * 
  * Additional led strips can be hooked up to the board for increased functionality with 
  * the light sensor.
  * 
  * An example use case would be if the light threshhold gets below a certain level, then you can toggle the led 
  * strips on to a certain value.
-********************************************/
-// Libaraies to include
+ *  
+ * @version 0.1
+ * @date 2024-04-23
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
+
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include "Adafruit_TSL2591.h"
 
-// Define the sensor identifier...
+// Define the sensor hardware
 #define LIGHTSENSOR 2591
 
-// Define the light sensor object...
+// light sensor object
 Adafruit_TSL2591 tsl = Adafruit_TSL2591(LIGHTSENSOR);
 
-// Define the light sensor lux data variable
+// light sensor lux data variable
 float lightSensorLux = 0;
 
-// This function will tell us some basic information about the sensor that we are using
+/**
+ * @brief This function will tell us some basic information about the sensor that we are using
+ * 
+ */
 void displayLightSensorInfo(){
     // Get the data of the sensor
     sensor_t sensor;
     tsl.getSensor(&sensor);
 
-    // One big print statement to give us the information that we would like to recieve
+    // section of print statements to output information 
     Serial.println(F("----------------------------------------------"));
     Serial.print(F("Sensor:         ")); Serial.println(sensor.name);
     Serial.print(F("Driver Version: ")); Serial.println(sensor.version);
@@ -38,17 +50,23 @@ void displayLightSensorInfo(){
     Serial.println(F("----------------------------------------------\n\n"));
 }
 
-// This function will be for configuring the sensor to our light environment around us...
+/**
+ * @brief This function will be for configuring the sensor to the current light environment
+ * 
+ */
 void configureLightSensor(){
-    // This will set our sensor gain to 25x, which is the medium sensor configuration that we can have
+    // This will set our sensor gain to 25x (medium sensor gain) 
     tsl.setGain(TSL2591_GAIN_MED);
 
-    // This will define how long we give the sensor to sense light from the outside world
-    // We are in a fairly light sensitive envioronment, so we don't need a ton of time for this
-    tsl.setTiming(TSL2591_INTEGRATIONTIME_300MS); // We will do a medium integration time
+    // defines how long the sensor has to sense light 
+    // We are in a fairly light sensitive envioronment
+    tsl.setTiming(TSL2591_INTEGRATIONTIME_300MS); // medium integration time
 }
 
-// This function will show the the reading of the IR spectrum and convert it to lux
+/**
+ * @brief This function will show the the reading of the IR spectrum and convert it to lux
+ * 
+ */
 void readSensor(){
     uint32_t lum = tsl.getFullLuminosity();
     uint16_t ir, full;
@@ -66,7 +84,9 @@ void readSensor(){
       }
 }
 
-// This function will need to get called in the startup of the main program so the light sensor works
+/**
+ * @brief This function is used to light sensor INIT, displays info, then configures the sensor
+ */
 void setupLightSensor(){
     Serial.println(F("Starting the Adafruit TSL2591 Light Sensor"));
 
@@ -83,7 +103,11 @@ void setupLightSensor(){
     configureLightSensor();
 }
 
-// Test the light sensor to make sure that it is working properly
+/**
+ * @brief Test the light sensor to make sure that it is working properly
+ * 
+ * @param pvParam standard param for FreeRTOS
+ */
 void testLightSensorTask(void* pvParam){
     while(true){
         readSensor();
@@ -92,6 +116,10 @@ void testLightSensorTask(void* pvParam){
     }
 }
 
+/**
+ * @brief function for handling and storing light data on webserver 
+ * 
+ */
 void handleLightSensor()
 {
     JsonDocument doc;

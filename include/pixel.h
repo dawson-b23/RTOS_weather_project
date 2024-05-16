@@ -1,9 +1,18 @@
-/*************************************
- * Code to drive the pixels on the board.
+/**
+ * @file pixel.h
+ * @author Lucien Lee
+ * 
+ * @brief Code to drive the pixels on the board.
  * 
  * These pixel will mainly light up different colors to allow the user to tell what 
  * Stage the sensor is at, or what the device has completed/is looking for
-**************************************/
+ * 
+ * @version 0.1
+ * @date 2024-04-23
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include <Adafruit_NeoPixel.h>
 
 #ifdef __AVR__

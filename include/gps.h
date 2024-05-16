@@ -1,8 +1,16 @@
-/******************************************
- * This is for all of the GPS functionality so we can get the weather data based on where the GPS
+/**
+ * @file gps.h
+ * @author Dawson Burgess (dawsonhburgess@gmail.com)
+ * @brief This is for all of the GPS functionality so we can get the weather data based on where the GPS
  * is located. This will be the main driving force for the entire project, as much
  * of the functionality of the assignment is going to be driven based off of the GPS
-*******************************************/
+ * 
+ * @version 0.1
+ * @date 2024-04-23
+ * 
+ * @copyright Copyright (c) 2024
+ * 
+ */
 #include <TinyGPSPlus.h>
 
 // Global Defines
@@ -16,7 +24,11 @@ int getGPSTrue = 1;
 // Include the other libraries
 #include "buttons.h"
 
-// This function will get the longitude and lattitude from the GPS...
+/**
+ * @brief This function will get the longitude and lattitude from the GPS
+ * 
+ * @return int; returns 1 if connection is not established and location is invalid
+ */
 int getGPSCoord(){
     while(GPSSerial.available() > 0){
         gps.encode(GPSSerial.read());
@@ -27,9 +39,6 @@ int getGPSCoord(){
         glattitude = gps.location.lat();
         glongitude = gps.location.lng();
 
-        //strip.setPixelColor(3, strip.Color(0, 0, 255));
-        //strip.show();
-
         //set time offset
         setOffset();
         return 0;
@@ -38,7 +47,11 @@ int getGPSCoord(){
     }
 }
 
-// This is the task to run the GPS connunication for testing
+/**
+ * @brief This is the task to run the GPS connunication for testing
+ * 
+ * @param pvParam standard param for FreeRTOS
+ */
 void gpsInfoTask(void* pvParam){
     int startButtonTask = 0;
     while(true){
@@ -58,9 +71,13 @@ void gpsInfoTask(void* pvParam){
     }
 }
 
+/**
+ * @brief function for handling and storing gps data on webserver 
+ * 
+ */
 void handleGPSData() {
     JsonDocument doc;
-    doc["lat"] = String(glattitude, 6);  // ensure you are actually updating these values
+    doc["lat"] = String(glattitude, 6); 
     doc["lng"] = String(glongitude, 6);
 
     String output;
